@@ -2,11 +2,12 @@ var express = require('express');
 var app = express();
 var numAlarms = 0;
 var alarms = new Array();
-
-function Alarm(id, time, notification)
+var currHour, currMinute;
+function Alarm(id, minute, hour, notification)
 {
 	this.id = id;
-	this.time = time;
+	this.minute = minute;
+	this.hour = hour;
 	this.notification = notification;
 }
 
@@ -24,10 +25,26 @@ app.get('/', function(req, res){
 app.post('/createAlarm', function(req, res){
 //  console.log(req.body);
 	numAlarms++;
-	alarms.push(new Alarm(numAlarms, req.body.time, req.body.notification));
+	alarms.push(new Alarm(numAlarms, req.body.minute, req.body.hour, req.body.notification));
 	res.send(alarms[0]);
   
 });
 
+function checkAlarm()
+{
+	var d = new Date();
+	currHour = d.getHours();
+	currMinute = d.getMinutes();
+	alarms.forEach(toAlert);
+}
+
+function toAlert(curr, index, arr)
+{
+	console.log("Current: " + currHour + ":" + currMinute);
+	console.log("Compare: " + curr.hour + ":" + curr.minute);
+	if(curr.hour == currHour && curr.minute == currMinute)
+		console.log(curr.notification);
+}
 app.listen(8080);
+setInterval(checkAlarm, 60000);
 console.log('Listening on port 8080...');
