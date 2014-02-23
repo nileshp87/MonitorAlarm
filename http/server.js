@@ -14,8 +14,8 @@ function Alarm(id, minute, hour, notification)
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.get('/hello.txt', function(req, res){
-  res.send('Hello World!');
+app.get('/pendingAlarms', function(req, res){
+  res.send(alarms);
 });
 
 app.get('/', function(req, res){
@@ -23,11 +23,18 @@ app.get('/', function(req, res){
 });
 
 app.post('/createAlarm', function(req, res){
-//  console.log(req.body);
 	numAlarms++;
 	alarms.push(new Alarm(numAlarms, req.body.minute, req.body.hour, req.body.notification));
 	res.send(alarms[0]);
   
+});
+
+app.post('/deleteAlarm', function(req, res){
+	alarms.forEach(
+		function(val, ind, arr){
+			if(val.id == req.body.id)
+				arr.splice(ind, 1);
+	});
 });
 
 function checkAlarm()
@@ -43,7 +50,10 @@ function toAlert(curr, index, arr)
 	console.log("Current: " + currHour + ":" + currMinute);
 	console.log("Compare: " + curr.hour + ":" + curr.minute);
 	if(curr.hour == currHour && curr.minute == currMinute)
+	{
 		console.log(curr.notification);
+		arr.splice(index, 1);
+	}
 }
 app.listen(8080);
 setInterval(checkAlarm, 60000);
