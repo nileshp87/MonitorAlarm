@@ -33,8 +33,16 @@ app.post('/deleteAlarm', function(req, res){
 	alarms.forEach(
 		function(val, ind, arr){
 			if(val.id == req.body.id)
+			{
 				arr.splice(ind, 1);
+				res.send(true);
+			}
 	});
+	res.send(false);
+});
+
+app.get('/index.js', function(req, res){
+	res.sendfile('index.js');
 });
 
 function checkAlarm()
