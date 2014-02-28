@@ -46,7 +46,7 @@ function updatePending(){
 			time = document.createElement('td');
 			notif = document.createElement('td');
 			id.appendChild(document.createTextNode(pending[i].id));
-			time.appendChild(document.createTextNode(pending[i].hour + ":" + pending[i].minute));
+			time.appendChild(document.createTextNode((pending[i].hour < 10 ? "0" + pending[i].hour : pending[i].hour) + ":" + (pending[i].minute < 10 ? "0" + pending[i].minute : pending[i].minute)));
 			notif.appendChild(document.createTextNode(pending[i].notification));
 			tr.appendChild(id);
 			tr.appendChild(time);
