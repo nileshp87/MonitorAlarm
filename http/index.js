@@ -67,4 +67,10 @@ function createAlarm(hour, minute, notification){
 		+ hour + "&notification=" + notification, function(){updatePending();});
 }
 
+function submitAlarm(){
+	var form = document.forms[0];
+	createAlarm(form[0].value, form[1].value, form[2].value);
+	return false;
+}
+
 updatePending();
