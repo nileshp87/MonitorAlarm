@@ -33,24 +33,33 @@ function updatePending(){
 		idhead = document.createElement('th');
 		timehead = document.createElement('th');
 		notifhead = document.createElement('th');
+		delhead = document.createElement('th');
 		idhead.appendChild(document.createTextNode('ID'));
 		timehead.appendChild(document.createTextNode('Time'));
-		notifhead.appendChild(document.createTextNode('Notification'));
+		notifhead.appendChild(document.createTextNode('Notification'));		
+		delhead.appendChild(document.createTextNode('Delete?'));
 		header.appendChild(idhead);
 		header.appendChild(timehead);
 		header.appendChild(notifhead);
+		header.appendChild(delhead);
 		t.appendChild(header);
 		for(var i = 0; i < pending.length; i++){
 			tr = document.createElement('tr');
 			id = document.createElement('td');
 			time = document.createElement('td');
 			notif = document.createElement('td');
+			del = document.createElement('td');
+			btn = document.createElement('button');
 			id.appendChild(document.createTextNode(pending[i].id));
 			time.appendChild(document.createTextNode((pending[i].hour < 10 ? "0" + pending[i].hour : pending[i].hour) + ":" + (pending[i].minute < 10 ? "0" + pending[i].minute : pending[i].minute)));
 			notif.appendChild(document.createTextNode(pending[i].notification));
+			btn.setAttribute("onClick", "deleteAlarm(" + pending[i].id + ")");
+			btn.appendChild(document.createTextNode("Delete"));
+			del.appendChild(btn);
 			tr.appendChild(id);
 			tr.appendChild(time);
 			tr.appendChild(notif);
+			tr.appendChild(del);
 			t.appendChild(tr);
 			t.appendChild(tr);
 		}

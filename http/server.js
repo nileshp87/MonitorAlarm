@@ -25,6 +25,7 @@ app.get('/', function(req, res){
 app.post('/createAlarm', function(req, res){
 	numAlarms++;
 	alarms.push(new Alarm(numAlarms, req.body.minute, req.body.hour, req.body.notification));
+	res.send(true);
 });
 
 app.post('/deleteAlarm', function(req, res){
