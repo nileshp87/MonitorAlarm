@@ -1,9 +1,10 @@
+var notificationsArray;
+
 function postData(url, data, callback){
 	http = new XMLHttpRequest();
 	http.open("POST", url, true);
 	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	//http.setRequestHeader("Connection", "close");
-	http.onreadystatechange = function() {//Call a function when the state changes.
+	http.onreadystatechange = function() {
 		if(http.readyState == 4 && http.status == 200) {
 			callback();
 		}
@@ -52,7 +53,7 @@ function updatePending(){
 			btn = document.createElement('button');
 			id.appendChild(document.createTextNode(pending[i].id));
 			time.appendChild(document.createTextNode((pending[i].hour < 10 ? "0" + pending[i].hour : pending[i].hour) + ":" + (pending[i].minute < 10 ? "0" + pending[i].minute : pending[i].minute)));
-			notif.appendChild(document.createTextNode(pending[i].notification));
+			notif.appendChild(document.createTextNode(notificationsArray[pending[i].notification].title));
 			btn.setAttribute("onClick", "deleteAlarm(" + pending[i].id + ")");
 			btn.appendChild(document.createTextNode("Delete"));
 			del.appendChild(btn);
@@ -64,6 +65,21 @@ function updatePending(){
 			t.appendChild(tr);
 		}
 		document.getElementById("pending").appendChild(t);
+	});
+}
+
+function loadNotifications(){
+	getData('/notifications', function(notifications){
+		notificationsArray = notifications;
+		var select = document.createElement('select');
+		select.setAttribute('name','notification');
+		for(var i = 0; i < notifications.length; i++){
+			option = document.createElement('option');
+			option.setAttribute('value',i);
+			option.appendChild(document.createTextNode(notifications[i].title));
+			select.appendChild(option);
+		}
+		document.forms[0].insertBefore(select,document.forms[0][2]);
 	});
 }
 
@@ -83,3 +99,4 @@ function submitAlarm(){
 }
 
 updatePending();
+loadNotifications();

@@ -1,8 +1,22 @@
 var express = require('express');
 var app = express();
+var sys = require('sys');
+var spawn = require('child_process').spawn;
 var numAlarms = 0;
 var alarms = new Array();
 var currHour, currMinute;
+var notifications = [
+					{
+						"title" : "Justice League Unlimited",
+						"command" : "./jleague.sh"
+					},
+					{
+						"title" : "Malcolm in the Middle",
+						"command" : "./malcolm.sh"
+					}
+					];
+var initializationCommand = "../monitorToggle.py";
+
 function Alarm(id, minute, hour, notification)
 {
 	this.id = id;
@@ -44,21 +58,27 @@ app.get('/index.js', function(req, res){
 	res.sendfile('index.js');
 });
 
+app.get('/notifications', function(req, res){
+	res.send(notifications);
+});
+
 function checkAlarm()
 {
 	var d = new Date();
 	currHour = d.getHours();
 	currMinute = d.getMinutes();
 	alarms.forEach(toAlert);
+	if(alarms.length == 0)
+		numAlarms = 0;
 }
 
 function toAlert(curr, index, arr)
 {
-	console.log("Current: " + currHour + ":" + currMinute);
-	console.log("Compare: " + curr.hour + ":" + curr.minute);
 	if(curr.hour == currHour && curr.minute == currMinute)
 	{
-		console.log(curr.notification);
+		spawn(initializationCommand);
+		setTimeout(function(){ spawn(notifications[curr.notification].command); }, 3000);
+		console.log("[" + currHour + ":" + currMinute +"] Now Running: " + notifications[curr.notification].command)
 		arr.splice(index, 1);
 	}
 }

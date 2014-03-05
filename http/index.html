@@ -3,6 +3,7 @@
 		<title>Monitor Alarm</title>
 		<script src="index.js">
 		</script>
+		
 	</head>
 	<body>
 		<form id="createAlarm">
@@ -20,6 +21,7 @@
 					<option>11</option>
 					<option>12</option>
 				</select>&nbsp;:&nbsp;<select name="minute">
+					<option value="0">00</option>
 					<option value="1">01</option>
 					<option value="2">02</option>
 					<option value="3">03</option>
@@ -79,9 +81,9 @@
 					<option>57</option>
 					<option>58</option>
 					<option>59</option>
-				</select> <br /> 
-			Notification: <input type="text" name="notification" /> <br />
-			<input type="button" onClick="submitAlarm()" value="Create Alarm"/>
+				</select> 
+				<br /> 
+			<input type="button" onClick="submitAlarm()" value="Create Alarm" name="sendAlarm" />
 		</form>
 		<div id="pending">
 		</div>
