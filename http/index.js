@@ -13,7 +13,6 @@ function postData(url, data, callback){
 }
 
 function getData(url, callback){
-	var pending;
 	http = new XMLHttpRequest();
 	http.open("GET", url, true);
 	http.onreadystatechange = function() { 
@@ -68,9 +67,10 @@ function updatePending(){
 	});
 }
 
-function loadNotifications(){
+function initialize(){
 	getData('/notifications', function(notifications){
 		notificationsArray = notifications;
+		updatePending();
 		var select = document.createElement('select');
 		select.setAttribute('name','notification');
 		for(var i = 0; i < notifications.length; i++){
@@ -79,7 +79,7 @@ function loadNotifications(){
 			option.appendChild(document.createTextNode(notifications[i].title));
 			select.appendChild(option);
 		}
-		document.forms[0].insertBefore(select,document.forms[0][2]);
+		document.forms[0].insertBefore(select,document.forms[0][3]);
 	});
 }
 
@@ -94,9 +94,9 @@ function createAlarm(hour, minute, notification){
 
 function submitAlarm(){
 	var form = document.forms[0];
-	createAlarm(form[0].value, form[1].value, form[2].value);
+	createAlarm(parseInt(form[0].value) + (document.forms[0][2].checked ? 12 : 0), form[1].value, form[3].value);
 	return false;
 }
 
-updatePending();
-loadNotifications();
+
+initialize();
