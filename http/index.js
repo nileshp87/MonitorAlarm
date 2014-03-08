@@ -79,6 +79,14 @@ function createInstants(){
 		tr.appendChild(buttontd);
 		t.appendChild(tr);
 	}
+	tr = document.createElement('tr');
+	buttontd = document.createElement('td');
+	button = document.createElement('button');
+	button.setAttribute('onClick',"monitorToggle()");
+	button.appendChild(document.createTextNode("Toggle Monitor"));
+	buttontd.appendChild(button);
+	tr.appendChild(buttontd);
+	t.appendChild(tr);
 	document.getElementById("instants").appendChild(t);
 }
 
@@ -118,7 +126,14 @@ function startAlarm(id){
 	getData("/startAlarm?notification="+id,setStarted(id));
 }
 
+function monitorToggle(){
+	getData('/initialize', function(data){
+		window.alert("Monitor Toggled!");
+	});
+}
+
 function setStarted(id){
+	window.alert(notificationsArray[id].title + " Started!");
 	// TODO: Update table to show the alarm has been started
 }
 

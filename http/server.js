@@ -64,7 +64,12 @@ app.get('/notifications', function(req, res){
 
 app.get('/startAlarm', function(req, res){
 	startAlarm(req.query.notification);
-	return res.send(true);
+	res.send(true);
+});
+
+app.get('/initialize', function(req, res){
+	spawn(initializationCommand);
+	res.send(true);
 });
 
 function checkAlarm(){
