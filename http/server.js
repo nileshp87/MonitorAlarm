@@ -7,8 +7,8 @@ var alarms = new Array();
 var currHour, currMinute;
 var notifications = [
 					{
-						"title" : "Justice League Unlimited",
-						"command" : "./jleague.sh"
+						"title" : "The Avengers",
+						"command" : "./avenge.sh"
 					},
 					{
 						"title" : "Malcolm in the Middle",
