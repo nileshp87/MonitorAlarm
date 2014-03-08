@@ -6,6 +6,8 @@
 		
 	</head>
 	<body>
+		<h1>Monitor Alarm</h1>
+		<h2>Create New Alarm</h2>
 		<form id="createAlarm">
 			Hour: <select name="hour">
 					<option value="1">01</option>
@@ -85,7 +87,11 @@
 				<br /> 
 			<input type="button" onClick="submitAlarm()" value="Create Alarm" name="sendAlarm" />
 		</form>
+		<h2>Current Pending Alarms</h2>
 		<div id="pending">
+		</div>
+		<h2>Start Alarms Immediately</h2>
+		<div id="instants">
 		</div>
 	</body>
 </html>

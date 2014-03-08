@@ -67,10 +67,26 @@ function updatePending(){
 	});
 }
 
+function createInstants(){
+	var t = document.createElement('table');
+	for(var i = 0; i < notificationsArray.length; i++){
+		tr = document.createElement('tr');
+		buttontd = document.createElement('td');
+		button = document.createElement('button');
+		button.setAttribute('onClick',"startAlarm(" + i + ")");
+		button.appendChild(document.createTextNode(notificationsArray[i].title));
+		buttontd.appendChild(button);
+		tr.appendChild(buttontd);
+		t.appendChild(tr);
+	}
+	document.getElementById("instants").appendChild(t);
+}
+
 function initialize(){
 	getData('/notifications', function(notifications){
 		notificationsArray = notifications;
 		updatePending();
+		createInstants();
 		var select = document.createElement('select');
 		select.setAttribute('name','notification');
 		for(var i = 0; i < notifications.length; i++){
@@ -94,9 +110,16 @@ function createAlarm(hour, minute, notification){
 
 function submitAlarm(){
 	var form = document.forms[0];
-	createAlarm(parseInt(form[0].value) + (document.forms[0][2].checked ? 12 : 0), form[1].value, form[3].value);
+	createAlarm((parseInt(form[0].value) + (document.forms[0][2].checked ? 12 : 0))%24, form[1].value, form[3].value);
 	return false;
 }
 
+function startAlarm(id){
+	getData("/startAlarm?notification="+id,setStarted(id));
+}
+
+function setStarted(id){
+	// TODO: Update table to show the alarm has been started
+}
 
 initialize();

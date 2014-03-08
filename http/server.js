@@ -62,8 +62,12 @@ app.get('/notifications', function(req, res){
 	res.send(notifications);
 });
 
-function checkAlarm()
-{
+app.get('/startAlarm', function(req, res){
+	startAlarm(req.query.notification);
+	return res.send(true);
+});
+
+function checkAlarm(){
 	var d = new Date();
 	currHour = d.getHours();
 	currMinute = d.getMinutes();
@@ -72,15 +76,18 @@ function checkAlarm()
 		numAlarms = 0;
 }
 
-function toAlert(curr, index, arr)
-{
+function toAlert(curr, index, arr){
 	if(curr.hour == currHour && curr.minute == currMinute)
 	{
-		spawn(initializationCommand);
-		setTimeout(function(){ spawn(notifications[curr.notification].command); }, 3000);
-		console.log("[" + currHour + ":" + currMinute +"] Now Running: " + notifications[curr.notification].command)
+		startAlarm(index);
 		arr.splice(index, 1);
 	}
+}
+
+function startAlarm(id){
+	spawn(initializationCommand);
+		setTimeout(function(){ spawn(notifications[id].command); }, 3000);
+		console.log("[" + currHour + ":" + currMinute +"] Now Running: " + notifications[id].command)
 }
 app.listen(8080);
 setInterval(checkAlarm, 60000);
